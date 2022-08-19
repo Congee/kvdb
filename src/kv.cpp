@@ -6,11 +6,6 @@
 using Hashmap = std::unordered_map<Key, Value>;
 
 template <>
-KV<Hashmap>::KV() noexcept {
-  store = Hashmap();
-}
-
-template <>
 std::optional<Value> KV<Hashmap>::get(const Key &key) noexcept {
   auto x = store.find(key);
   if (x == store.end()) return None;
