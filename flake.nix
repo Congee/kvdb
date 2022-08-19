@@ -16,9 +16,9 @@
 
         in
           {
-            devShell = pkgs.stdenvNoCC.mkDerivation {
+            devShell = llvm.stdenv.mkDerivation {
               name = "shell";
-              nativeBuildInputs = [
+              buildInputs = [
                 # builder
                 # p.gnumake
                 # p.bear
@@ -30,22 +30,15 @@
                 # llvm.lldb
                 pkgs.gdb
 
-                # XXX: the order of include matters
-                pkgs.clang-tools_14
-                llvm.clang # clangd
-                llvm.libcxxabi
-
                 pkgs.gtest
                 pkgs.fmt
                 pkgs.tl-expected
-              ] ++ lib.optional pkgs.stdenv.isLinux [ llvm.lld ]
+              ] ++ lib.optionals pkgs.stdenv.isLinux [ llvm.lld ]
               ;
-
-              CPATH = builtins.concatStringsSep ":" [
-                (lib.makeSearchPathOutput "dev" "include" [ llvm.libcxx ])
-                (lib.makeSearchPath "resource-root/include" [ llvm.clang ])
+              nativeBuildInputs = [
+                pkgs.clang-tools_14  # don't use clangd from llvm.clang
               ];
-              LD_LIBRARY_PATH = lib.strings.makeLibraryPath [ pkgs.fmt ];
+              LD_LIBRARY_PATH = lib.strings.makeLibraryPath [ pkgs.fmt pkgs.gtest ];
             };
           }
     );
