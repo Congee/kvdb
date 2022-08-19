@@ -9,7 +9,7 @@ class KV {
   Store store;
 
  public:
-  KV<Store>() noexcept;
+  KV() noexcept { store = Store{}; }
   std::optional<Key> get(const Key& key) noexcept;
   void put(const Key& key, Value& value) noexcept;
   void del(const Key& key) noexcept;
