@@ -15,21 +15,32 @@ project(
   ],
 )
 
-fmt = dependency('fmt')  # it is too nice having have flake.nix
+add_global_arguments('-fcolor-diagnostics', language : 'cpp')  # ninja color output
+
+fmt = dependency('fmt')  # it is too nice to have flake.nix
 expected = dependency('tl-expected', method : 'cmake', modules : ['tl::expected'])
 cxxabi = host_machine.system() == 'darwin' ? meson.get_compiler('cpp').find_library('c++abi') : []  # required on darwin
 
-sources = files(
+inc = [include_directories('include')]
+deps = [fmt, expected, cxxabi]
+
+src = files(
   'src/main.cpp',
   'src/kv.cpp',
-  'src/kv.hpp',
   'src/skiplist.cpp',
-  'src/skiplist.hpp',
-  'src/common.hpp',
 )
 executable(
   'kv',
-  sources,
-  install: false,
-  dependencies: [fmt, expected, cxxabi]
+  src,
+  include_directories: inc,
+  dependencies: deps,
 )
+
+skiplist_lib = library(
+  'skiplist',
+  src,
+  include_directories: inc,
+  dependencies: deps,
+)
+
+subdir('tests')

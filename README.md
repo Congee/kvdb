@@ -15,9 +15,14 @@ yourself.
 
 # Build
 ```bash
-meson build     # generate build instructions
-ninja -C build  # compile the project
-./build/kv      # run the executable
+meson setup --native-file=native.ini build/     # generate build instructions
+meson compile -C build                          # build the project
+```
+
+# Run
+```bash
+./build/kv              # run the executable
+meson test -C build     # run tests
 ```
 
 
