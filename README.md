@@ -14,6 +14,8 @@ yourself.
 </details>
 
 # Build
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FCongee%2Fkvdb.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FCongee%2Fkvdb?ref=badge_shield)
+
 ```bash
 meson build     # generate build instructions
 ninja -C build  # compile the project
@@ -23,3 +25,7 @@ ninja -C build  # compile the project
 
 # References:
 https://github.com/balloonwj/CppGuide/blob/master/articles/leveldb源码分析/README.md
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FCongee%2Fkvdb.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FCongee%2Fkvdb?ref=badge_large)
