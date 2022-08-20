@@ -2,9 +2,8 @@
 
 #include <fmt/format.h>
 #include <fmt/os.h>
+#include <gtest/gtest.h>
 #include <tl/expected.hpp>
-
-#include "gtest/gtest.h"
 
 #define Some std::make_optional
 #define None std::nullopt

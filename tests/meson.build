@@ -7,7 +7,7 @@ sources = files(
 )
 
 test_exe = executable(
-  'gtest',
+  'test_main',
   [test_main, sources],
   include_directories : inc,
   dependencies : [gtest, deps],
