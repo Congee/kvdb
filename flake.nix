@@ -29,6 +29,7 @@
                 # debugger
                 # llvm.lldb
                 pkgs.gdb
+                pkgs.shellcheck
 
                 pkgs.gtest
                 pkgs.fmt
@@ -36,6 +37,7 @@
               ] ++ lib.optionals pkgs.stdenv.isLinux [ llvm.lld ]
               ;
               nativeBuildInputs = [
+                llvm.bintools
                 pkgs.clang-tools_14  # don't use clangd from llvm.clang
               ];
               shellHook = lib.optionalString pkgs.stdenv.isLinux ''
@@ -43,6 +45,7 @@
                 export CXX_LD="lld"
               '';
               LD_LIBRARY_PATH = lib.strings.makeLibraryPath [ pkgs.fmt pkgs.gtest llvm.libcxx ];
+              LLVM_PROFILE_FILE="/tmp/test.profraw";
             };
           }
     );

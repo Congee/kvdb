@@ -1,0 +1,34 @@
+name: Unittests
+on: [pull_request]
+jobs:
+  run:
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@master
+    - name: Install dependencies  # TODO: cache or go docker
+      run: |
+        sudo apt update
+        sudo apt install clang-14 llvm-14 meson cmake ninja-build libfmt-dev libgtest-dev libexpected-dev
+        sudo update-alternatives --install /usr/bin/llvm-cov      llvm-cov      /usr/bin/llvm-cov-14       200
+        sudo update-alternatives --install /usr/bin/llvm-profdata llvm-profdata /usr/bin/llvm-profdata-14  200
+
+    - name: Build, test, and generate coverage report
+      env:
+        CC: clang
+        CXX: clang++
+        LLVM_PROFILE_FILE: /tmp/test.profraw
+      run: |
+        meson setup -Db_coverage=true build
+        meson compile -C build
+        meson test -C build
+        ./coverage.sh
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+        files: /tmp/coverage.lcov
+        flags: unittests # optional
+        name: codecov-umbrella # optional
+        fail_ci_if_error: true # optional (default = false)
+        verbose: true # optional (default = false)

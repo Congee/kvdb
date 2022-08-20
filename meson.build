@@ -15,11 +15,23 @@ project(
   ],
 )
 
-add_global_arguments('-fcolor-diagnostics', language : 'cpp')  # ninja color output
+compiler = meson.get_compiler('cpp')
+cpp_args = []
+link_args = []
+coverage_args = ['-fprofile-instr-generate', '-fcoverage-mapping']
+
+if compiler.get_id() == 'clang'
+  add_global_arguments(['-fcolor-diagnostics', '-DFMT_CONSTEVAL='], language : 'cpp')  # ninja color output
+  if get_option('b_coverage')
+    add_global_arguments(coverage_args, language : 'cpp')  # ninja color output
+    add_global_link_arguments(coverage_args, language : 'cpp')
+  endif
+endif
+
 
 fmt = dependency('fmt')  # it is too nice to have flake.nix
 expected = dependency('tl-expected', method : 'cmake', modules : ['tl::expected'])
-cxxabi = host_machine.system() == 'darwin' ? meson.get_compiler('cpp').find_library('c++abi') : []  # required on darwin
+cxxabi = host_machine.system() == 'darwin' ? compiler.find_library('c++abi') : []  # required on darwin
 
 inc = [include_directories('include')]
 deps = [fmt, expected, cxxabi]
