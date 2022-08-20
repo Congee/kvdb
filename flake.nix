@@ -38,7 +38,11 @@
               nativeBuildInputs = [
                 pkgs.clang-tools_14  # don't use clangd from llvm.clang
               ];
-              LD_LIBRARY_PATH = lib.strings.makeLibraryPath [ pkgs.fmt pkgs.gtest ];
+              shellHook = lib.optionalString pkgs.stdenv.isLinux ''
+                export CC_LD="lld"
+                export CXX_LD="lld"
+              '';
+              LD_LIBRARY_PATH = lib.strings.makeLibraryPath [ pkgs.fmt pkgs.gtest llvm.libcxx ];
             };
           }
     );
