@@ -1,0 +1,5 @@
+FROM ubuntu:22.04
+RUN apt update \
+    && apt install -y clang-14 llvm-14 meson cmake ninja-build libfmt-dev libgtest-dev libexpected-dev \
+    && update-alternatives --install /usr/bin/llvm-cov      llvm-cov      /usr/bin/llvm-cov-14       200 \
+    && update-alternatives --install /usr/bin/llvm-profdata llvm-profdata /usr/bin/llvm-profdata-14  200
