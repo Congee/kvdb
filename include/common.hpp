@@ -1,7 +1,6 @@
 #include <optional>
 
-#include <fmt/format.h>
-#include <fmt/os.h>
+#include <fmt/core.h>
 #include <gtest/gtest.h>
 #include <tl/expected.hpp>
 
